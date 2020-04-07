@@ -7,7 +7,7 @@ function authentication(req, res, next){
         let decoded = decode(req.headers.access_token)
         
         User.findOne({
-            id : decoded.id
+            where : { id : decoded.id}
         })
         .then(result => {
 

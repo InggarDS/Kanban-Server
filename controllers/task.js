@@ -6,18 +6,18 @@ class Controller {
 
     }
 
-    static update(req, res){
+    static update(req, res, next){
         
     }
 
 
-    static read(req, res){
+    static read(req, res, next){
 
 
     }
 
  
-    static delete(req, res){
+    static delete(req, res, next){
 
 
     }

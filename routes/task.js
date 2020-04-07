@@ -1,4 +1,5 @@
 const router = require('express').Router()
+
 const controller = require('../controllers/task')
 const authentication = require('../middleware/authentication')
 const authorization = require('../middleware/authorization')

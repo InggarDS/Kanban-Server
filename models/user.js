@@ -22,7 +22,11 @@ module.exports = (sequelize, DataTypes) => {
           msg : 'Email required'
         },
         checkEmail(val){
-          return User.findOne(val)
+          return User.findOne({
+            where : {
+              email : val
+            }
+          })
           .then(result => {
             if ( result ){
               throw new Error('Email already in Use !')

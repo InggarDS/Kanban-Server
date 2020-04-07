@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
 
-  const { Model } = sequelize.sequelize
+  const { Model } = sequelize.Sequelize
 
   class Category extends Model {}
 
@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Category.associate = function(models) {
    Category.hasMany(models.Task)
+   Category.belongsTo(models.User)
   };
   return Category;
 };

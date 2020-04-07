@@ -4,33 +4,37 @@ const { compare } = require('../helpers/bcrypt')
 
 class Controller {
 
-    static register(req, res){
-
+    static register(req, res, next){
         const { email, password } = req.body
+        
         User.create({
             email,
             password
         })
         .then(result => {
-
+  
             let payload = {
                 id : result.id,
                 email : result.email
             }
 
             let token = generateToken(payload)
-            res.status(201).json({
+
+           return res.status(201).json({
                 message : 'success create user',
                 users : {
-                    id : payload.id,
-                    email : payload.email,
-                    access_token : token
+                    "id" : payload.id,
+                    "email" : payload.email,
+                    "access_token" : token
                 }
             })
         })
+        .catch(err => {
+           return next(err)
+        })
     }
 
-    static login(req, res){
+    static login(req, res, next){
 
         User.findOne({
             where : {
@@ -54,12 +58,21 @@ class Controller {
                     })
 
                 } else {
-                    //not found
+                   return next({
+                       name : 'bad request',
+                       errors : [{message : 'invalid username/email'}]
+                   })
 
                 }
             } else {
-                //not found
+                return next({
+                    name : 'bad request',
+                    errors : [{message : 'invalid username/email'}]
+                })
             }
+        })
+        .catch(err => {
+            return next(err)
         })
 
     }
