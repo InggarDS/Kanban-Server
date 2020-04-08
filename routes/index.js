@@ -4,6 +4,7 @@ const task = require('./task')
 const category = require('./category')
 
 router.use('/', user)
+router.use('/', category)
 router.use('/', task)
 
 

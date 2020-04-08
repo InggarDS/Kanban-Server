@@ -1,24 +1,84 @@
-const { Task } = require('../models')
+const { Task, Category } = require('../models')
 
 class Controller {
 
-    static create(req, res, next){
+    
+    static read(req, res, next){
+        
+        Task.findAll({
+            where : { UserId : req.userId },
+             include : [{
+                 model : Category,
+                 where : { UserId : req.userId }
+             }]
+        })
+        .then(result => {
+            
+            return res.status(200).json({
+                tasks : result
+        })
+ 
+        })
+        .catch(err => {
+            return next(err)
+        })
 
+    }
+
+    static create(req, res, next){
+        const { title, CategoryId } = req.body
+        const UserId  = req.userId
+
+        Task.create({
+            title,
+            UserId,
+            CategoryId
+        })
+        .then(result => {
+            return res.status(200).json({
+                message : 'success create task',
+                task : result
+            })
+        })
+        .catch(err => {
+            return next(err)
+        })
     }
 
     static update(req, res, next){
-        
+        const { title, CategoryId } = req.body
+        const { UserId } = req.userId
+
+        Task.update({
+            title,
+            UserId,
+            CategoryId,
+            where : {
+                id : req.params.id
+            }
+        })
+        .then(result => {
+            return res.status(200).json({
+                message : 'success update'
+            })
+        })
+
     }
 
 
-    static read(req, res, next){
-
-
-    }
 
  
     static delete(req, res, next){
 
+        Task.destroy(req.params.id)
+        .then(result => {
+            return res.status(200).json({
+                message : 'success delete task'
+            })
+        })
+        .catch(err => {
+            return next(err)
+        })
 
     }
 

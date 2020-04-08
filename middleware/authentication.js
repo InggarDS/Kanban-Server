@@ -5,7 +5,8 @@ function authentication(req, res, next){
 
     try {
         let decoded = decode(req.headers.access_token)
-        
+        // req.userId = decoded.id
+ 
         User.findOne({
             where : { id : decoded.id}
         })
@@ -15,7 +16,7 @@ function authentication(req, res, next){
                 req.userId = result.id
                 return next()
             } else {
-                
+
                 return res.status(400).json({
                     name : 'Not Found',
                     errors : [{message : 'user not found'}]
@@ -23,7 +24,7 @@ function authentication(req, res, next){
             }
 
         })
-        .then(err => {
+        .catch(err => {
 
             return res.status(400).json({
                 name : 'Unauthorized',
