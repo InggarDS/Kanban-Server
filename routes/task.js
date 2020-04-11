@@ -9,6 +9,7 @@ router.get('/tasks', controller.read)
 router.post('/tasks', controller.create)
 
 router.put('/tasks/:id', authorization,controller.update)
+router.patch('/tasks/:id', authorization,controller.updateCategory)
 router.delete('/tasks/:id', authorization,controller.delete)
 
 

@@ -29,6 +29,8 @@ class Controller {
 
         Category.update({
             name : req.body.name,
+           
+        }, {
             where : {
                 id : req.params.id
             },
@@ -64,7 +66,11 @@ class Controller {
 
     static delete(req, res, next){
 
-        Category.destroy(req.params.id)
+        Category.destroy({
+            where : {
+                id : req.params.id
+            }
+        })
         .then(result => {
             return res.status(200).json({
                 message : 'Success delete category'

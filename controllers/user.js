@@ -30,6 +30,7 @@ class Controller {
             })
         })
         .catch(err => {
+
            return next(err)
         })
     }
@@ -77,8 +78,67 @@ class Controller {
 
     }
 
+    static googleSign(req, res, next){
+        const client = new OAuth2Client(process.env.CLIENT_ID);
+        let email;
 
+        client.verifyIdToken ({
+            
+            idToken : req.body.id_token,
+            audience : process.env.CLIENT_ID
+        })
+        .then(result => {
+            email = result.payload.email
 
+            return User.findOne({
+                where : { email }
+            })
+            .then(data => {
+                if (data){
+                    
+                    let user = {
+                        id:data.id,
+                        username : data.name,
+                        email : data.email,
+                    }
+
+                    let token = generateToken(user)
+
+                    res.status(200).json({
+                        'access_token' : token
+                    })
+                } else {
+                    let newUser = {
+                        email : result.payload.email,
+                        password : 'GoogleAuth'
+                    }
+
+                    return User.create(newUser)
+                    .then(data => {
+
+                        let user =  {
+                            id : data.id,
+                            username : data.username,
+                            email : data.email
+                        }
+            
+                        let token = generateToken(user);
+            
+                        res.status(201).json({
+                            message : 'success add user !!',
+                            'id' : data.id,
+                            'email' : data.email,
+                            'access_token' : token
+                        })
+
+                    })
+                    .catch(err => {
+                        next(err)
+                    })
+                }
+            })   
+        })
+    }
 }
 
 module.exports = Controller

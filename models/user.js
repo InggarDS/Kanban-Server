@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
           args : true,
           msg : 'Email required'
         },
-        checkEmail(val){
+        checkEmail(value){
           return User.findOne({
             where : {
-              email : val
+              email : value
             }
           })
           .then(result => {

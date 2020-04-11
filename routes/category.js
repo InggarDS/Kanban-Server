@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const controller = require('../controllers/category')
 const authentication = require('../middleware/authentication')
-const authorization = require('../middleware/authorization')
+const authorization = require('../middleware/authorizationCategory')
 
 router.use(authentication)
 router.post('/category', controller.create)
