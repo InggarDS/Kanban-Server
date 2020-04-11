@@ -3,8 +3,6 @@ const { Category } = require('../models')
 class Controller {
 
     static create(req, res, next){
-
-        // console.log('ini user id', req.userId);
         
         const { name } = req.body
         let UserId = req.userId
