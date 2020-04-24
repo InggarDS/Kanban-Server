@@ -1,6 +1,7 @@
 const { User } = require('../models')
 const { generateToken } = require('../helpers/jwt')
 const { compare } = require('../helpers/bcrypt')
+// const { OAuth2Client } = require('google-auth-library')
 
 class Controller {
 
@@ -79,23 +80,23 @@ class Controller {
     }
 
     static googleSign(req, res, next){
-        const client = new OAuth2Client(process.env.CLIENT_ID);
-        let email;
+        const { email, name } = req.body
+        // const client = new OAuth2Client(process.env.CLIENT_ID);
+        // let email;
 
-        client.verifyIdToken ({
+        // client.verifyIdToken ({
             
-            idToken : req.body.id_token,
-            audience : process.env.CLIENT_ID
-        })
-        .then(result => {
-            email = result.payload.email
+        //     idToken : req.body.id_token,
+        //     audience : process.env.CLIENT_ID
+        // })
+        // .then(result => {
+            // email = result.payload.email
 
-            return User.findOne({
+            User.findOne({
                 where : { email }
             })
             .then(data => {
                 if (data){
-                    
                     let user = {
                         id:data.id,
                         username : data.name,
@@ -113,7 +114,7 @@ class Controller {
                         password : 'GoogleAuth'
                     }
 
-                    return User.create(newUser)
+                    User.create(newUser)
                     .then(data => {
 
                         let user =  {
@@ -137,7 +138,7 @@ class Controller {
                     })
                 }
             })   
-        })
+        // })
     }
 }
 
