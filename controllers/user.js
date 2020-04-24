@@ -81,16 +81,6 @@ class Controller {
 
     static googleSign(req, res, next){
         const { email, name } = req.body
-        // const client = new OAuth2Client(process.env.CLIENT_ID);
-        // let email;
-
-        // client.verifyIdToken ({
-            
-        //     idToken : req.body.id_token,
-        //     audience : process.env.CLIENT_ID
-        // })
-        // .then(result => {
-            // email = result.payload.email
 
             User.findOne({
                 where : { email }
