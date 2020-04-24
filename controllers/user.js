@@ -8,6 +8,7 @@ class Controller {
     static register(req, res, next){
         const { email, password } = req.body
         
+        
         User.create({
             email,
             password
@@ -100,7 +101,7 @@ class Controller {
                     })
                 } else {
                     let newUser = {
-                        email : result.payload.email,
+                        email : email,
                         password : 'GoogleAuth'
                     }
 
@@ -128,7 +129,6 @@ class Controller {
                     })
                 }
             })   
-        // })
     }
 }
 
